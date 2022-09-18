@@ -1,0 +1,44 @@
+version: '2'
+services:
+  tfserving:
+    image: 'intel/intel-optimized-tensorflow-serving:2.3.0'
+    restart: 'no'
+    volumes:
+      - './tf-models/rfcn:/models/rfcn'
+    environment:
+      - MODEL_NAME=rfcn
+      - OMP_NUM_THREADS=4
+      - TENSORFLOW_INTER_OP_PARALLELISM=2
+      - TENSORFLOW_INTRA_OP_PARALLELISM=4
+    ports:
+      - '8500:8500'
+      - '8501:8501'
+  mongodb:
+    image : 'mongo:latest'
+    container_name: mongodb
+    ports:
+    - 27017:27017
+    restart: "no"
+  postgresql:
+    image: 'postgres:latest'
+    volumes:
+      - './postgre-init/init.sql:/docker-entrypoint-initdb.d/init.sql'
+      - './postgre-init/postgres_data:/var/lib/postgresql/data'
+    restart: 'no'
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=test
+      - POSTGRES_DB=counter
+    ports:
+      - '5432:5432'
+  niq-test:
+    image: 'niq-test'
+    build: '../object-counter-code'
+    restart: 'no'
+    ports:
+      - '6010:6010'
+    environment:
+      - TFS_HOST=tfserving
+      - POSTGRE_HOST=postgresql
+      - MONGO_HOST=mongodb
+      - ENV=postgre

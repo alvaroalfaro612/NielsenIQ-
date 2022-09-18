@@ -1,0 +1,6 @@
+
+CREATE TABLE IF NOT EXISTS  COUNTS(
+   ID              SERIAL PRIMARY KEY,
+   CLASS_NAME            VARCHAR     NOT NULL,
+   COUNTS            INT     NOT NULL
+);
