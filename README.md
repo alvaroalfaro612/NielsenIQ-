@@ -42,6 +42,7 @@ Class CountPostgreRepo implementing ObjectCountRepo interface is added. To use t
 - Create a GET endpoint that returns a message to check if the flask API is running correctly.
 - Implement Swagger to have a platform that documents the use of the api and allows the execution of tests from it.
 - Use Waitress instead of the Flask development server.
+- Control possible exceptions, especially those related to request with incorrect parameters. Also provide response with the correct http code (in this example 400 - Bad Request). For problems in the communication with inference servers code 500.
 ### 4. Implement at least one of the proposed improvements.
 I have chosen to improve the deployment process by allowing it to be done in one step through docker-compose. The instructions detailed above are summarised as: downloading the model and putting it in the correct folder and running the docker-compose up file to deploy at the same time: the inference server, the two databases and the Flask API.
 ### 5. If we want to use multiple models trained internally (not public), what would you change in the setup of the project?
